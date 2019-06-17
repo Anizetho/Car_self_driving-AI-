@@ -48,9 +48,6 @@ def telemetry(sid, data):
         median = cv2.medianBlur(opencv_image, 5)       # Floute l'image (5 paramètre floutage)
         edges = cv2.Canny(median, 100, 200)     # Trouver les grandes variations de couleur
 
-        #cv2.imshow('edges',edges)
-        #cv2.waitKey(0)
-
         index = [90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
         Array_distanceleft = []
         Array_distanceright = []
@@ -59,38 +56,28 @@ def telemetry(sid, data):
             pixels = np.argwhere(edges[n] == 255)  # Recherche le blanc (255) dans l'image
             if len(pixels[pixels < 160]) != 0:
                 pixelsleft = pixels[pixels < 160]
-                leftdetection = pixelsleft[len(pixelsleft) - 1]  # calcule la position moyenne de l'edge à gauche
+                leftdetection = pixelsleft[len(pixelsleft) - 1]  # calcule la position du premier edge à gauche (bord de la route)
                 distanceleft = 160 - leftdetection
                 Array_distanceleft.append(distanceleft)
             if len(pixels[pixels > 160]) != 0:
                 pixelsright = pixels[pixels > 160]
-                rightdetection = pixelsright[0]
+                rightdetection = pixelsright[0]                  # calcule la position du premier edge à droite (bord de la route)
                 distanceright = rightdetection - 160
                 Array_distanceright.append(distanceright)
-
-        #if len(Array_distanceright) != 0 and len(Array_distanceleft) != 0:
-            #print(max(Array_distanceleft) - min(Array_distanceleft))
-        print(Array_distanceleft)
-        print(len(Array_distanceleft))
-        print(Array_distanceright)
-        print(len(Array_distanceright))
 
         if (len(Array_distanceleft)) != 0:
             DistanceToLeft = np.median(Array_distanceleft)
         else:
             DistanceToLeft = 1000
-        #print('Distance gauche = ',DistanceToLeft)
 
         if (len(Array_distanceright)) != 0:
             DistanceToRight = np.median(Array_distanceright)
         else:
             DistanceToRight = 1000
-        #print('Distance gauche = ', DistanceToLeft)
-        #print('Distance droite = ', DistanceToRight)
-
+        
+        # Si on ne détecte pas correctement les bords de la route dans la 1ère zone, on recalcule dans une seconde zone de l'image
         if (len(Array_distanceleft)) != 0 and (len(Array_distanceright)) != 0:
             if (min(Array_distanceleft) < 50 and min(Array_distanceright) < 50):
-                print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
                 index2 = [75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85]
                 Array_distanceleft2 = []
                 Array_distanceright2 = []
@@ -108,12 +95,10 @@ def telemetry(sid, data):
                         distanceright2 = rightdetection2 - 160  # distance jusqu'au bord droit de la voiture
                         Array_distanceright2.append(distanceright2)
                 if len(Array_distanceleft2) != 0:
-                    #print("Array_left2",Array_distanceleft2)
                     DistanceToLeft = np.median(Array_distanceleft2)
                 else:
                     DistanceToLeft = 1000
                 if len(Array_distanceright2) != 0 :
-                    #print("Array_right2", Array_distanceright2)
                     DistanceToRight = np.median(Array_distanceright2)
                 else:
                     DistanceToRight = 1000
@@ -121,21 +106,18 @@ def telemetry(sid, data):
                 DistanceToLeft = np.median(Array_distanceleft)
                 DistanceToRight = np.median(Array_distanceright)
 
-        #print('ArrayLeft', Array_distanceright)
-        #print('DLeft',DistanceToLeft)
-        #print('ArrayRight', Array_distanceright)
-        #print('DRight',DistanceToRight)
-
         # Use your model to compute steering and throttle
         steer = model.predict(np.array([DistanceToLeft, DistanceToRight, throttle]).reshape(1,-1))
         steer = steer[0]
         #print(steer)
         #steer = 0              # Direction
-        throttle = 0.5                      # Accélération
+        #throttle = 0.5                      # Accélération
         speed = 1                           # Speed
         print(steer)
-        #print(DistanceToLeft)
-        #print(DistanceToRight)
+        if steer > 0.05 or steer < -0.05:
+            throttle = 0
+        else:
+            throttle = 1
         # response to the simulator with a steer angle and throttle
         send(steer, throttle)
     else:
