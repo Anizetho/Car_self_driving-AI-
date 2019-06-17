@@ -1,25 +1,27 @@
 # Intelligence artificielle pour une voiture autonome
 
 ## 1) Contexte
-*Ce dépôt présente le design et le développement d'une intelligence artificielle (IA) prévu pour conduire une voiture dans un environnement simplifié, c'est-à-dire dans un environnement ne contenant ni piétons, ni croisements de route. L'objectif est uniquement de pouvoir faire rouler une voiture sur la route.*
+*Ce dépôt présente le design et le développement d'une intelligence artificielle (IA) prévu pour conduire une voiture dans un environnement simplifié, c'est-à-dire dans un environnement ne contenant ni piétons, ni croisements de route. L'objectif est uniquement de pouvoir faire rouler une voiture sur la route. Ce projet a été entièrement réalisé au moyen du langage de programmation Python.*
 
 ## 2) Installation du simulateur
-Il est nécessaire de télécharger le simulateur de conduite. Pour ce faire, référez-vous au guide d'installation suivant : https://github.com/udacity/self-driving-car-sim
+Il est nécessaire de télécharger le simulateur de conduite développé par Udacity. Pour ce faire, référez-vous au guide d'installation suivant : https://github.com/udacity/self-driving-car-sim
 
   Ce simulateur permet :
-  * D'une part, d'enregistrer des données d'apprentissage sur l'un des deux circuits disponibles (training phase).
-  * D'autre part, de lancer la simulation pour tester le modèle d'intelligence artificiel élaboré (test phase).
+  * D'une part, d'enregistrer des données d'apprentissage sur l'un des deux circuits disponibles (*training phase*).
+  * D'autre part, de lancer la simulation pour tester le modèle d'intelligence artificiel élaboré (*test phase*).
 
-## 3) Démarrer la simulation 
-Afin de démarer la simulation, il faut tout d'abord lancer le simulateur de conduite d'udacity et aller en mode autonome. Une fois la voiture sur le circuit prête à démarrer, lancer le code drive.py et la simulation commence.
+Ce simulateur se comporte comme un client socketIO. Pour lancer une simulation (*Autonomous Mode*), tout ce que vous avez à faire est de créer un serveur socketIO qui écoute sur le port 4567 pour recevoir les évènements du simulateur et les envoyer aux commandes de la voiture. Plus de précisions suivront au point (4).
 
-## 4) Description des fichiers et répertoires
+## 3) Description des fichiers et répertoires
 Ce dépot contient 3 fichiers ainsi que 2 dossiers : 
-* Fichier **[*Features.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/Features.py)**  --> Ce script permet de calculer les features (distance droite et gauche) et de créer un fichier CSV reprennant ces features associées à l'angle de volant de la voiture correspondant.
-* Fichier **[*Linear_regression_model.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/Linear_regression_model.py)**  --> Ce script permet de créer le modèle de régression linéaire en utilisant le fichier CSV précédemment créé avec Features.py
-* Fichier **[*drive.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/drive.py)** --> Ce script permet de lancer la simulation en utilisant le modèle créé avec Linear_regression_model.py
-* Dossier **[*Linear_regression_model*](https://github.com/Anizetho/Car_self_driving-AI-/tree/master/Linear_regression_model)** --> Ce dossier contient des modèles déjà créés utilisables directement dans drive_py et il contiendra également les nouveaux modèles qui seront créés. 
-* Dossier **[*Training_data*](https://github.com/Anizetho/Car_self_driving-AI-/tree/master/Training_data)** --> Contient les images d'une simulation et le fichier CSV fourni par le simulateur d'udacity lors de la récupération des données d'entrainements. Les données d'entrainements doivent être insérer à la main dans ce dossier avant d'utiliser le script features_py. Les données présentes dans Data_2 ne sont qu'indicative et sont celles qui ont permis de créer le modèle présent dans Linear_regression_model (Ces données ne peuvent pas être utiliser directement dans features_py).
+* Fichier **[*Features.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/Features.py)**  --> Ce script python est utilisé pour calculer les features du modèle (distances droite et gauche) ainsi que pour créer un fichier CSV reprennant ces features associées à l'angle de volant correspondant (voiture).
+* Fichier **[*Linear_regression_model.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/Linear_regression_model.py)**  --> Ce script python est utilisé pour créer le modèle de régression linéaire. Pour ce faire, il utilise le fichier CSV précédemment créé avec *Features.py*.
+* Fichier **[*drive.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/drive.py)** --> Ce script est utilisé pour lancer la simulation (*Autonomous Mode* sur Udacity). Pour ce faire, il charge le modèle préalablement créé (*Linear_regression_model.py*), ensuite les informations sont envoyées au simulateur par *socketIO*. 
+* Dossier **[*Linear_regression_model*](https://github.com/Anizetho/Car_self_driving-AI-/tree/master/Linear_regression_model)** --> Ce dossier contient les nouveaux modèles mais aussi les anciens modèles déjà créés précédemment et directement utilisables (avec le fichier *drive.py*).  
+* Dossier **[*Training_data*](https://github.com/Anizetho/Car_self_driving-AI-/tree/master/Training_data)** --> Ce dossier contient les données d'entrainement obtenues via le simulateur d'Udacity (*Training Mode*). L'utilisateur doit définir le dossier de sauvegarde (sur son ordinateur) de ces données. Cependant, le chemin de ce dossier fera toujours référence à la racine de l'ordinateur sur lequel la simulation a été opérée. Pour cette raison, le dossier *Training_data* ne contient qu'un seul ensemble de données (Data_2), indicatives pour mieux comprendre le fonctionnement. 
+
+## 4) Démarrer la simulation 
+Afin de démarer la simulation, il faut tout d'abord lancer le simulateur de conduite d'udacity et aller en mode autonome. Une fois la voiture sur le circuit prête à démarrer, lancer le code drive.py et la simulation commence.
 
 ## 5) Algorithmes et bibliothèques utilisées
 * Préprocessing : Utilisation de la bibliotèque openCV afin de réaliser le traitement d'image nécessaire pour le calcul des distances gauches et droites.
