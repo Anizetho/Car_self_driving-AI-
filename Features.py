@@ -63,6 +63,7 @@ Result = length*['']
 i=0
 ToAddResult = "distance_left,distance_right,direction,acceleration"
 print(full_path + '/' + result_csv_file)
+# écrire dans le CSV
 with open(full_path + '/' + result_csv_file, "w+") as f:
     f.write(ToAddResult + "\n")
     while i < length :
@@ -74,17 +75,17 @@ with open(full_path + '/' + result_csv_file, "w+") as f:
             pixels = np.argwhere(edges[n] == 255)               # Recherche le blanc (255) dans l'image
             if len(pixels[pixels < 160]) != 0:
                 pixelsleft = pixels[pixels < 160]
-                leftdetection = pixelsleft[len(pixelsleft) - 1]  # calcule la position moyenne de l'edge à gauche
+                leftdetection = pixelsleft[len(pixelsleft) - 1]  # calcule la position du premier edge à gauche (bord de la route)
                 distanceleft = 160 - leftdetection
-                Array_distanceleft.append(distanceleft)
+                Array_distanceleft.append(distanceleft)          # ajoute les distances à gauche de cette ligne à la liste
             if len(pixels[pixels > 160]) != 0:
                 pixelsright = pixels[pixels > 160]
-                rightdetection = pixelsright[0]
+                rightdetection = pixelsright[0]                  # calcule la position du premier edge à gauche (bord de la route)
                 distanceright = rightdetection - 160
-                Array_distanceright.append(distanceright)
+                Array_distanceright.append(distanceright)        # ajoute les distances à droite de cette ligne à la liste
 
         if len(Array_distanceleft) != 0:
-            DistanceToLeft = np.median(Array_distanceleft)
+            DistanceToLeft = np.median(Array_distanceleft)       # calcule la médianne des positions de chaque lignes 
         else:
             #print('---------------no info left----------------------')  # si aucun edge a été détecté à gauche
             DistanceToLeft = 1000
@@ -105,7 +106,7 @@ with open(full_path + '/' + result_csv_file, "w+") as f:
         one_acceleration = acceleration[i]
         interim_result = str(one_distance_left) + ',' + str(one_distance_right) + ',' + str(one_direction) + ',' + str(one_acceleration)
 
-        f.write(interim_result + "\n")
+        f.write(interim_result + "\n")              # écrire dans le CSV les distances
 
         print(str(i) + "/" + str(length - 1) + "  Process data's ...")
         i += 1
