@@ -20,7 +20,7 @@ Ce dépot contient 3 fichiers ainsi que 2 dossiers :
 - Fichier Linear_regression_model.py --> Ce script permet de créer le modèle de régression linéaire en utilisant le fichier CSV précédemment créé avec Features.py
 - Fichier drive.py --> Ce script permet de lancer la simulation en utilisant le modèle créé avec Linear_regression_model.py
 - Dossier Linear_regression_model --> Ce dossier contient des modèles déjà créés utilisables directement dans drive_py et il contiendra également les nouveaux modèles qui seront créés. 
-- Dossier Training_data/Data_2 --> Contient les images d'une simulation et le fichier CSV fourni par le simulateur d'udacity lors de la récupération des données d'entrainements. Ces données d'entrainements doivent être insérer à la main dans ce dossier avant d'utiliser la le script features_py.
+- Dossier Training_data --> Contient les images d'une simulation et le fichier CSV fourni par le simulateur d'udacity lors de la récupération des données d'entrainements. Les données d'entrainements doivent être insérer à la main dans ce dossier avant d'utiliser le script features_py. Les données présentes dans Data_2 ne sont qu'indicative et sont celles qui ont permis de créer le modèle présent dans Linear_regression_model (Ces données ne peuvent pas être utiliser directement dans features_py).
 
 5) Algorithmes et bibliothèques utilisées
 - Préprocessing : Utilisation de la bibliotèque openCV afin de réaliser le traitement d'image nécessaire pour le calcul des distances gauches et droites.
