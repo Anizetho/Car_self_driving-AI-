@@ -16,15 +16,20 @@ Ce simulateur se comporte comme un client *socketIO*. Pour lancer une simulation
 Ce dépot contient 3 fichiers ainsi que 2 dossiers : 
 * Fichier **[*Features.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/Features.py)**  --> Ce script python est utilisé pour calculer les *features* du modèle (distances droite et gauche) ainsi que pour créer un fichier CSV (*Result.csv* par défaut) reprennant ces *features* associées à l'angle de volant correspondant (voiture).
 * Fichier **[*Linear_regression_model.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/Linear_regression_model.py)**  --> Ce script python est utilisé pour créer le modèle de régression linéaire. Pour ce faire, il utilise le fichier CSV précédemment créé avec *Features.py*.
-* Fichier **[*drive.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/drive.py)** --> Ce script python est utilisé pour lancer la simulation (*Autonomous Mode* sur Udacity). Pour ce faire, il charge le modèle préalablement créé (*Linear_regression_model.py*), ensuite il est configuré pour envoyer en temps réel des prédictions de valeurs au simulateur par *socketIO* sur base des informations provenant de la voiture (envoyées par le simulateur). 
-* Dossier **[*Linear_regression_model*](https://github.com/Anizetho/Car_self_driving-AI-/tree/master/Linear_regression_model)** --> Ce dossier contient les nouveaux modèles mais aussi les anciens modèles déjà créés précédemment et directement utilisables (avec le fichier *drive.py*).  
-* Dossier **[*Training_data*](https://github.com/Anizetho/Car_self_driving-AI-/tree/master/Training_data)** --> Ce dossier contient les données d'entrainement obtenues via le simulateur d'Udacity (*Training Mode*). L'utilisateur doit définir le dossier de sauvegarde (sur son ordinateur) de ces données. Cependant, le chemin de ce dossier fera toujours référence à la racine de l'ordinateur sur lequel la simulation a été opérée. Pour cette raison, le dossier *Training_data* ne contient qu'un seul ensemble de données (Data_2), indicatives pour mieux comprendre le fonctionnement. 
+* Fichier **[*drive.py*](https://github.com/Anizetho/Car_self_driving-AI-/blob/master/drive.py)** --> Ce script python est utilisé pour lancer la simulation (*Autonomous Mode* sur Udacity). Pour ce faire, il charge le modèle préalablement créé (*Linear_regression_model.py*). Ensuite, il est configuré de façon à envoyer en temps réel des prédictions de valeurs au simulateur par *socketIO* sur base des informations provenant de la voiture (envoyées du simulateur). 
+* Dossier **[*Linear_regression_model*](https://github.com/Anizetho/Car_self_driving-AI-/tree/master/Linear_regression_model)** --> Ce dossier contient les nouveaux modèles créés mais aussi les anciens modèles créés précédemment et directement utilisables avec le fichier *drive.py* (exemple : *model4.pkl*).  
+* Dossier **[*Training_data*](https://github.com/Anizetho/Car_self_driving-AI-/tree/master/Training_data)** --> Ce dossier contient les données d'entrainement obtenues via le simulateur d'Udacity (*Training Mode*). Pour sauvegarder les données, l'utilisateur doit définir le chemin du dossier de sauvegarde (sur son ordinateur) de ces données. Cependant, le chemin de ce dossier fera toujours référence à la racine de l'ordinateur sur lequel la simulation a été opérée. Pour cette raison, les données présentes dans ce dossier dépendent de l'ordinateur employé et ne peuvent être utilisées que par cet ordinateur. Par conséquent, le dossier *Training_data* ne contient qu'un seul ensemble de données (Data_2), indicatives pour mieux comprendre le fonctionnement. 
 
-## 4) Démarrer la simulation 
-Afin de démarer la simulation, il faut tout d'abord lancer le simulateur de conduite d'udacity et aller en mode autonome. Une fois la voiture sur le circuit prête à démarrer, lancer le code drive.py et la simulation commence.
+## 4) Algorithmes et bibliothèques utilisées
+Au total, 10 bibliothèques ont été utilisées :
+* Pour le *préprocessing* : Utilisation de la bibliotèque *openCV* afin de réaliser le traitement d'image nécessaire pour le calcul des distances gauches et droites.
+* Pour le modèle : Utilisation de la librairie *scikit learn (sk-learn)* afin de réaliser la régression linéaire. *pickle* est également utilisé afin de sauvegarder et charger le modèle.
+* Pour le lancement de la simulation : Utilisation de *socketio* et *eventlet* pour communicquer avec le simulateur Udacity. 
+* Autres : Utilisation de *os*, *numpy*, *matplotlib*, *mpl_toolkits* ou encore *pandas* pour diverses opérations et traitements.
 
-## 5) Algorithmes et bibliothèques utilisées
-* Préprocessing : Utilisation de la bibliotèque openCV afin de réaliser le traitement d'image nécessaire pour le calcul des distances gauches et droites.
-* Modèle : Utilisation de la librairie scikit learn (sk-learn) afin de réaliser la régression linéaire. Pickle est également utilisé afin de sauvegarder et charger le modèle.
-* Lancement simulation : Utilisation de socketio et eventlet pour communicquer avec le simulateur udacity. 
-Autre : Utilisation de Numpy, CSV et panda pour diverses opérations.
+## 5) Lancement de la simulation 
+Avant de pouvoir lancer la simulation, il faut tout d'abord réaliser les 4 étapes suivantes : 
+1. Sur l'application Udacity, lancer le mode d'entrainement (*training mode*). Vous pouvez alors enregistrer des données d'entrainement.
+2. Ouvrez le script python *Features.py* et exécutez-le. Vous obtenez alors vos features.
+3. Ouvrez le script python *Linear_regression_model.py* et exécutez-le. Vous avez alors créé votre modèle.
+4. Ouvrez le script python *drive.py* ainsi que le simulteur Udacity. Cette fois-ci, lancez le mode autonome (*Autonomous Mode*) sur Udacity. Une fois la voiture prête à démarrer, exécutez le script python (*drive.py*). À condition que le modèle ait été correctement élaboré, votre voiture doit rouler.
