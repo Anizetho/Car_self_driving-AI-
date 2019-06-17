@@ -45,15 +45,15 @@ def telemetry(sid, data):
         opencv_image = cv2.cvtColor(numpy_image, cv2.COLOR_RGB2BGR)
         #attention l'image n'est pas en noir et blanc !
 
-        median = cv2.medianBlur(opencv_image, 5)       # Floute l'image (5 paramètre floutage)
-        edges = cv2.Canny(median, 100, 200)     # Trouver les grandes variations de couleur
+        median = cv2.medianBlur(opencv_image, 5)                # Floute l'image (5 paramètre floutage)
+        edges = cv2.Canny(median, 100, 200)                     # Trouver les grandes variations de couleur
 
         index = [90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
         Array_distanceleft = []
         Array_distanceright = []
 
         for n in index:
-            pixels = np.argwhere(edges[n] == 255)  # Recherche le blanc (255) dans l'image
+            pixels = np.argwhere(edges[n] == 255)                # Recherche le blanc (255) dans l'image
             if len(pixels[pixels < 160]) != 0:
                 pixelsleft = pixels[pixels < 160]
                 leftdetection = pixelsleft[len(pixelsleft) - 1]  # calcule la position du premier edge à gauche (bord de la route)
@@ -82,15 +82,15 @@ def telemetry(sid, data):
                 Array_distanceleft2 = []
                 Array_distanceright2 = []
                 for n in index2:
-                    pixels2 = np.argwhere(edges[n] == 255)  # Recherche les pixels blanc (255) dans l'image
+                    pixels2 = np.argwhere(edges[n] == 255)                  # Recherche les pixels blanc (255) dans l'image
                     if len(pixels2[pixels2 < 160]) != 0:
                         pixelsleft2 = pixels2[pixels2 < 160]
                         leftdetection2 = pixelsleft2[len(pixelsleft2) - 1]  # calcule la position moyenne de l'edge
-                        distanceleft2 = 160 - leftdetection2  # distance  jusqu'au bord gauche de la route
+                        distanceleft2 = 160 - leftdetection2                # distance  jusqu'au bord gauche de la route
                         Array_distanceleft2.append(distanceleft2)
                     if len(pixels2[pixels2 > 160]) != 0:
                         pixelsright2 = pixels2[pixels2 > 160]
-                        rightdetection2 = pixelsright2[0]  # calcule la position moyenne de l'edge à droite !!
+                        rightdetection2 = pixelsright2[0]                   # calcule la position moyenne de l'edge à droite !!
                         # Problème, si on sort un peu trop de la route, le premier à droite est la ligne gauche
                         distanceright2 = rightdetection2 - 160  # distance jusqu'au bord droit de la voiture
                         Array_distanceright2.append(distanceright2)
@@ -107,11 +107,9 @@ def telemetry(sid, data):
                 DistanceToRight = np.median(Array_distanceright)
 
         # Use your model to compute steering and throttle
-        steer = model.predict(np.array([DistanceToLeft, DistanceToRight, throttle]).reshape(1,-1))
+        steer = model.predict(np.array([DistanceToLeft, DistanceToRight, throttle]).reshape(1,-1))  # Direction
         steer = steer[0]
-        #print(steer)
-        #steer = 0              # Direction
-        #throttle = 0.5                      # Accélération
+        #throttle = 0.5                     # Accélération
         speed = 1                           # Speed
         print(steer)
         if steer > 0.05 or steer < -0.05:

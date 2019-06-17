@@ -1,10 +1,8 @@
 # coding: utf-8
 
 import pandas as pd
-import csv
 import numpy as np
 import matplotlib.pyplot as plt
-import mmap
 import pandas as pd
 from sklearn import linear_model
 import seaborn as sns
@@ -16,7 +14,7 @@ import pickle
 import os
 
 # Paramètres modifiables par le user pour déterminer les données à traîter
-Data_to_treat = "Data_2"
+Data_to_treat = "Data_7"
 result_csv_file = "Result.csv"
 OS_Mac = 1
 
@@ -25,11 +23,11 @@ OS_Mac = 1
 if OS_Mac == 1:
     path = "/Users/anizetthomas/PycharmProjects/Car_self_driving/Training_data/"
     full_path = path + Data_to_treat
-    print(full_path)
-    print(full_path + '/driving_log.csv')
+
 else:   # Pour windows
     path = "/Training_data/"
     full_path = path + Data_to_treat + '/'
+
 
 ToAdd = "image_center,image_left,image_right,direction,acceleration,brake,speed"
 with open(full_path + '/driving_log.csv', 'r+') as file:
@@ -63,7 +61,6 @@ Result = length*['']
 i=0
 ToAddResult = "distance_left,distance_right,direction,acceleration"
 print(full_path + '/' + result_csv_file)
-# écrire dans le CSV
 with open(full_path + '/' + result_csv_file, "w+") as f:
     f.write(ToAddResult + "\n")
     while i < length :
@@ -73,19 +70,21 @@ with open(full_path + '/' + result_csv_file, "w+") as f:
             median = cv2.medianBlur(image, 5)                   # Floute l'image (5 paramètre floutage)
             edges = cv2.Canny(median, 100, 200)                 # Trouver les grandes variations de couleur
             pixels = np.argwhere(edges[n] == 255)               # Recherche le blanc (255) dans l'image
+            #print("pixels : ", pixels)
             if len(pixels[pixels < 160]) != 0:
                 pixelsleft = pixels[pixels < 160]
-                leftdetection = pixelsleft[len(pixelsleft) - 1]  # calcule la position du premier edge à gauche (bord de la route)
+                leftdetection = pixelsleft[
+                len(pixelsleft) - 1]                            # calcule la position du premier edge à gauche (bord de la route)
                 distanceleft = 160 - leftdetection
-                Array_distanceleft.append(distanceleft)          # ajoute les distances à gauche de cette ligne à la liste
+                Array_distanceleft.append(distanceleft)         # ajoute les distances à gauche de cette ligne à la liste
             if len(pixels[pixels > 160]) != 0:
                 pixelsright = pixels[pixels > 160]
-                rightdetection = pixelsright[0]                  # calcule la position du premier edge à gauche (bord de la route)
+                rightdetection = pixelsright[0]                 # calcule la position du premier edge à gauche (bord de la route)
                 distanceright = rightdetection - 160
-                Array_distanceright.append(distanceright)        # ajoute les distances à droite de cette ligne à la liste
+                Array_distanceright.append(distanceright)       # ajoute les distances à droite de cette ligne à la liste
 
         if len(Array_distanceleft) != 0:
-            DistanceToLeft = np.median(Array_distanceleft)       # calcule la médianne des positions de chaque lignes 
+            DistanceToLeft = np.median(Array_distanceleft)      # calcule la médianne des positions de chaque lignes
         else:
             #print('---------------no info left----------------------')  # si aucun edge a été détecté à gauche
             DistanceToLeft = 1000
@@ -106,7 +105,7 @@ with open(full_path + '/' + result_csv_file, "w+") as f:
         one_acceleration = acceleration[i]
         interim_result = str(one_distance_left) + ',' + str(one_distance_right) + ',' + str(one_direction) + ',' + str(one_acceleration)
 
-        f.write(interim_result + "\n")              # écrire dans le CSV les distances
+        f.write(interim_result + "\n")
 
         print(str(i) + "/" + str(length - 1) + "  Process data's ...")
         i += 1
