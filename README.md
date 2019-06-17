@@ -31,5 +31,5 @@ Au total, 10 bibliothèques ont été utilisées :
 Avant de pouvoir lancer la simulation, il faut tout d'abord réaliser les 4 étapes suivantes : 
 1. Sur l'application Udacity, lancer le mode d'entrainement (*training mode*). Vous pouvez alors enregistrer des données d'entrainement.
 2. Ouvrez le script python *Features.py* et exécutez-le. Vous obtenez alors vos features.
-3. Ouvrez le script python *Linear_regression_model.py* et exécutez-le. Vous avez alors créé votre modèle.
+3. Ouvrez le script python *Linear_regression_model.py* et exécutez-le. Vous obtenez alors votre modèle.
 4. Ouvrez le script python *drive.py* ainsi que le simulteur Udacity. Cette fois-ci, lancez le mode autonome (*Autonomous Mode*) sur Udacity. Une fois la voiture prête à démarrer, exécutez le script python (*drive.py*). À condition que le modèle ait été correctement élaboré, votre voiture doit rouler.
