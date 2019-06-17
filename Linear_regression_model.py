@@ -58,6 +58,7 @@ regr_2.fit(features_test,label_2)
 #plt.scatter(acceleration, direction)
 #plt.show()
 
+# sauvegarder le modèle créé
 pickle.dump(regr_1, open(path_model_1, "wb"))
 model_1 = pickle.load(open(path_model_1, 'rb'))
 
